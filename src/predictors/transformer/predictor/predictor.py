@@ -1,4 +1,5 @@
-from tensorflow.keras.layers import Concatenate, GlobalAveragePooling1D, Dropout, Dense, Input
+from tensorflow.keras.layers import Concatenate, GlobalAveragePooling1D,\
+    Dropout, Dense, Input
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Model
 from tensorflow.keras.callbacks import ModelCheckpoint
@@ -9,10 +10,10 @@ from .time_to_vector import Time2Vector
 
 
 class TransformerPredictor(BasePredictor):
-    def __init__(self, sequence_len=128, key_dimension=32, value_dimension=32,
-                 n_heads=16, ff_dimension=256, filter_size=3, dropout=0.1,
-                 epochs=50, batch_size=32, validation_split=0.1,
-                 checkpoint=None):
+    def __init__(self, sequence_len=128, key_dimension=32,
+                 value_dimension=32, n_heads=16, ff_dimension=256,
+                 filter_size=3, dropout=0.1, epochs=50, batch_size=32,
+                 validation_split=0.1, checkpoint=None):
         super().__init__()
         self.sequence_len = sequence_len
         self.key_dimension = key_dimension
@@ -51,12 +52,16 @@ class TransformerPredictor(BasePredictor):
         return model
 
     def train(self, x_train=None, y_train=None):
-        cp_callback = ModelCheckpoint(filepath=self.checkpoint,
-                                      save_best_only=True,
-                                      save_weights_only=True,
-                                      verbose=1)
+        cp_callback = ModelCheckpoint(
+            filepath=self.checkpoint,
+            save_best_only=True,
+            save_weights_only=True,
+            verbose=1)
         optimizer = Adam()
-        self.model.compile(optimizer=optimizer, loss='mse', metrics=['mae', 'mape'])
+        self.model.compile(
+            optimizer=optimizer,
+            loss='mse',
+            metrics=['mae', 'mape'])
         self.model.fit(x_train, y_train,
                        epochs=self.epochs, verbose=1,
                        batch_size=self.batch_size,

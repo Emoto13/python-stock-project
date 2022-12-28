@@ -5,4 +5,3 @@ class BasePreprocessor(ABC):
     @abstractmethod
     def preprocess(self, data, **kwargs):
         pass
-

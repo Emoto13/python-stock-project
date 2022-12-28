@@ -10,7 +10,8 @@ from .preprocessor import PreProcessor
 
 class TransformerWrapper(BaseWrapper):
     def __init__(self, dataframe=None, sequence_len=128,
-                 key_dimension=32, value_dimension=32, n_heads=16, ff_dimension=256, filter_size=3,
+                 key_dimension=32, value_dimension=32, n_heads=16,
+                 ff_dimension=256, filter_size=3,
                  dropout=0.1, epochs=50, batch_size=32,
                  train_test_split=0.1, validation_split=0.1,
                  checkpoint=None, symbol="undefined", periodicity="undefined"):
@@ -18,15 +19,24 @@ class TransformerWrapper(BaseWrapper):
         self.model = None
         self.dataframe = dataframe
         self.sequence_len = sequence_len
-        self.checkpoint = PathCreator.create_checkpoint_path(checkpoint=checkpoint,
-                                                             periodicity=periodicity,
-                                                             stock_symbol=symbol,
-                                                             predictor_name="transformer"
-                                                             )
-        self.data, self.target = PreProcessor.prepare_data(self.dataframe.price.values, sequence_len)
-        self.train_data, self.train_target, self.test_data, self.test_target = PreProcessor.split(self.data,
-                                                                                                  self.target,
-                                                                                                  train_test_split)
+        self.checkpoint = PathCreator.create_checkpoint_path(
+            checkpoint=checkpoint,
+            periodicity=periodicity,
+            stock_symbol=symbol,
+            predictor_name="transformer"
+        )
+        self.data, self.target = PreProcessor.prepare_data(
+            self.dataframe.price.values,
+            sequence_len
+        )
+        split_data = PreProcessor.split(
+            self.data,
+            self.target,
+            train_test_split
+        )
+        self.train_data, self.train_target, \
+            self.test_data, self.test_target = split_data
+
         # set model attributes
         self.key_dimension = key_dimension
         self.value_dimension = value_dimension
@@ -74,7 +84,9 @@ class TransformerWrapper(BaseWrapper):
         for i in range(time_ahead):
             model_input = np.array(temp_predictions[1:], dtype='float64')
             model_input = model_input.reshape([1, self.sequence_len, 1])
-            prediction = self.model.predict(tf.convert_to_tensor(model_input, dtype='float64'))
+            prediction = self.model.predict(
+                tf.convert_to_tensor(model_input, dtype='float64')
+            )
 
             temp_predictions.append(prediction[0][0])
             temp_predictions = temp_predictions[1:]
@@ -82,10 +94,16 @@ class TransformerWrapper(BaseWrapper):
             output.append(prediction[0].numpy()[0])
             print("Predicted date:", time_steps[i], output[-1])
 
-        result_df = pd.DataFrame(dict(time_steps=pd.Series(time_steps), prediction=pd.Series(output)))
+        result_df = pd.DataFrame(
+            dict(
+                time_steps=pd.Series(time_steps),
+                prediction=pd.Series(output)
+            )
+        )
         return result_df
 
-    def run_experiment(self, should_load=False, should_train=False, should_test=False, time_ahead=30):
+    def run_experiment(self, should_load=False, should_train=False,
+                       should_test=False, time_ahead=30):
         if should_load and os.path.exists(self.checkpoint):
             self.load()
 
@@ -95,7 +113,9 @@ class TransformerWrapper(BaseWrapper):
         if should_test:
             self.test()
 
-        predictions = self.predict_ahead(self.dataframe.price.values[-self.sequence_len:], time_ahead=time_ahead)
+        predictions = self.predict_ahead(
+            self.dataframe.price.values[-self.sequence_len:],
+            time_ahead=time_ahead)
         return predictions
 
     def load(self):

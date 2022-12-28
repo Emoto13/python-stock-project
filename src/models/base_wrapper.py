@@ -30,5 +30,6 @@ class BaseWrapper(ABC):
         pass
 
     @abstractmethod
-    def run_experiment(self, should_load=False, should_train=False, should_test=False, time_ahead=30):
+    def run_experiment(self, should_load=False, should_train=False,
+                       should_test=False, time_ahead=30):
         pass

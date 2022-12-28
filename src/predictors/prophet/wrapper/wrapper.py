@@ -4,7 +4,7 @@ from .preprocessor import PreProcessor
 
 
 class ProphetWrapper(BaseWrapper):
-    def __init__(self, data=None, periodicity="weekly", symbol="undefined") -> None:
+    def __init__(self, data=None, periodicity="weekly", symbol="undefined"):
         super().__init__()
         self.data = PreProcessor.prepare_data(data)
         self.periodicity = periodicity
@@ -30,7 +30,8 @@ class ProphetWrapper(BaseWrapper):
     def predict_ahead(self, data=None, time_ahead=1):
         return self.model.predict(data=data, time_ahead=time_ahead)
 
-    def run_experiment(self, should_load=False, should_train=False, should_test=False, time_ahead=30):
+    def run_experiment(self, should_load=False, should_train=False,
+                       should_test=False, time_ahead=30):
         predictions = self.predict_ahead(data=self.data, time_ahead=time_ahead)
         if should_test:
             self.test()

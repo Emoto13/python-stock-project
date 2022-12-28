@@ -10,7 +10,8 @@ class ComparisonPlotter:
         """
         :param original_data: pandas dataframe with date and price columns
         :param predictions: pandas dataframe with date and price columns
-        :param plot_path: Optional field specifying path for the generated plot. If not provided will dynamically create one
+        :param plot_path: Optional - specifies path for the generated plot.
+         If not provided will dynamically create one.
         :return: None
         """
         plot_path = PathCreator.create_plot_path(plot_path)
