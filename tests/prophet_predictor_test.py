@@ -6,7 +6,8 @@ from prophet import Prophet
 from src.predictors.prophet.predictor import ProphetPredictor
 
 
-# NOTE: This test is put in the root of test pacakge for legacy reasons related to PyStan
+# NOTE: This test is put in the root of test pacakge for legacy reasons
+# related to PyStan
 
 class TestProphetPredictor(unittest.TestCase):
     def setUp(self):
@@ -16,7 +17,9 @@ class TestProphetPredictor(unittest.TestCase):
         data = pd.DataFrame.from_dict(
             {
                 "y": [0.5 + i for i in range(1000)],
-                "ds": pd.date_range(start="2010-01-01", periods=1000).to_pydatetime().tolist()
+                "ds": pd.date_range(
+                    start="2010-01-01",
+                    periods=1000).to_pydatetime().tolist()
             }
         )
         time_ahead = 3
@@ -34,7 +37,10 @@ class TestProphetPredictor(unittest.TestCase):
         )
         time_ahead = 3
         predictions = self.predictor.predict(data, time_ahead=time_ahead)
-        self.assertEqual(time_ahead + len(data), len(predictions), "predictions should be of correct size")
+        self.assertEqual(
+            time_ahead + len(data),
+            len(predictions),
+            "predictions should be of correct size")
 
     def test_train(self):
         self.predictor.train()

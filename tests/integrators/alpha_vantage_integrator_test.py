@@ -18,8 +18,13 @@ class TestAlphaVantageIntegrator(unittest.TestCase):
         ))
 
         stock_symbol = "GOOGL"
-        integrator = AlphaVantageIntegrator().with_credentials(credentials="credentials")
-        data = integrator.get_data(stock_symbol=stock_symbol, periodicity="daily")
+        integrator = AlphaVantageIntegrator().with_credentials(
+            credentials="credentials")
+        data = integrator.get_data(
+            stock_symbol=stock_symbol,
+            periodicity="daily")
         self.assertEqual({"price"}, set(data.columns))
         self.assertEqual("date", data.index.name)
-        self.assertListEqual([0.5, 1.5, 2.5], list(data.price.values))
+        self.assertListEqual(
+            [0.5, 1.5, 2.5],
+            list(data.price.values))

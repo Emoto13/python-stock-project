@@ -6,7 +6,8 @@ from src.predictors.prophet.predictor import ProphetPredictor
 from src.predictors.prophet.wrapper import ProphetWrapper
 
 
-# NOTE: This test is put in the root of test pacakge for legacy reasons related to PyStan
+# NOTE: This test is put in the root of test pacakge for legacy reasons
+# related to PyStan
 
 
 class TestProphetWrapper(unittest.TestCase):
@@ -29,11 +30,17 @@ class TestProphetWrapper(unittest.TestCase):
             }
         )
         self.wrapper.model.test = MagicMock()
-        self.wrapper.model.predict = MagicMock(return_value=expected_predictions)
+        self.wrapper.model.predict = MagicMock(
+            return_value=expected_predictions)
 
-        predictions = self.wrapper.run_experiment(should_load=True, should_train=True, should_test=True)
+        predictions = self.wrapper.run_experiment(
+            should_load=True,
+            should_train=True,
+            should_test=True)
 
-        self.assertTrue(expected_predictions.equals(predictions), "predict_ahead should work correctly")
+        self.assertTrue(
+            expected_predictions.equals(predictions),
+            "predict_ahead should work correctly")
         self.wrapper.model.test.assert_called_once()
         self.wrapper.model.predict.assert_called_once()
 
@@ -44,9 +51,13 @@ class TestProphetWrapper(unittest.TestCase):
                 "index": ["01-04-2010"],
             }
         )
-        self.wrapper.model.predict = MagicMock(return_value=expected_predictions)
-        predictions = self.wrapper.predict_once(data=self.wrapper.data)
-        self.assertTrue(expected_predictions.equals(predictions), "predict_once should work correctly")
+        self.wrapper.model.predict = MagicMock(
+            return_value=expected_predictions)
+        predictions = self.wrapper.predict_once(
+            data=self.wrapper.data)
+        self.assertTrue(
+            expected_predictions.equals(predictions),
+            "predict_once should work correctly")
         self.wrapper.model.predict.assert_called_once()
 
     def test_train(self):
