@@ -49,6 +49,12 @@ class TransformerPredictor(BasePredictor):
         x = Dropout(self.dropout)(x)
         out = Dense(1, activation='linear')(x)
         model = Model(inputs=in_seq, outputs=out)
+
+        optimizer = Adam()
+        model.compile(
+            optimizer=optimizer,
+            loss='mse',
+            metrics=['mae', 'mape'])
         return model
 
     def train(self, x_train=None, y_train=None):
@@ -57,11 +63,6 @@ class TransformerPredictor(BasePredictor):
             save_best_only=True,
             save_weights_only=True,
             verbose=1)
-        optimizer = Adam()
-        self.model.compile(
-            optimizer=optimizer,
-            loss='mse',
-            metrics=['mae', 'mape'])
         self.model.fit(x_train, y_train,
                        epochs=self.epochs, verbose=1,
                        batch_size=self.batch_size,

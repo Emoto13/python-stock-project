@@ -7,7 +7,7 @@ from .utils import get_seasonality, \
 
 
 class ProphetPredictor(BasePredictor):
-    def __init__(self, periodicity='weekly', additional_params=None):
+    def __init__(self, data=None, periodicity='weekly', additional_params=None):
         """[summary]
 
         Args:
@@ -20,10 +20,10 @@ class ProphetPredictor(BasePredictor):
         super().__init__()
         if additional_params is None:
             additional_params = {}
+        self.data = None
         self.periodicity = periodicity
         self.additional_params = additional_params
         self.model = self.create_model()
-        self.data = None
 
     def create_model(self):
         seasonality = get_seasonality(self.periodicity)
@@ -47,6 +47,7 @@ class ProphetPredictor(BasePredictor):
         df_cv = cross_validation(self.model, initial=f"{3 * horizon} days",
                                  horizon=f'{horizon} days')
         df = performance_metrics(df_cv)
+        print(df)
         return df
 
     def predict(self, data=None, time_ahead=1):

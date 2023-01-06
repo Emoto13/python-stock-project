@@ -13,7 +13,7 @@ from src.predictors.prophet.wrapper import ProphetWrapper
 class TestProphetWrapper(unittest.TestCase):
     def setUp(self):
         self.wrapper = ProphetWrapper(
-            data=pd.DataFrame.from_dict(
+            dataframe=pd.DataFrame.from_dict(
                 {
                     "price": [0.5, 1.5, 2.5],
                     "index": ["01-01-2010", "01-02-2010", "01-03-2010"],

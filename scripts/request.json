@@ -1,0 +1,16 @@
+{
+  "periodicity": "daily",
+  "train_config": {
+    "should_train": true
+  },
+  "test_config": {
+    "should_test": true,
+    "should_generate_plot": false
+  },
+  "predict_config": {
+    "time_ahead": 100,
+    "should_generate_plot": true,
+    "should_load": true
+  },
+  "additional_model_parameters": {}
+}

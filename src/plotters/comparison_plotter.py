@@ -15,8 +15,9 @@ class ComparisonPlotter:
         :return: None
         """
         plot_path = PathCreator.create_plot_path(plot_path)
-        if not os.path.exists(plot_path):
-            os.makedirs(plot_path)
+        dir_name = os.path.dirname(plot_path)
+        if not os.path.exists(dir_name):
+            os.makedirs(dir_name)
 
         plt.figure()
         for frame in [original_data, predictions]:

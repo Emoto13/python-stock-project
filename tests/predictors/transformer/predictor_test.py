@@ -11,10 +11,8 @@ class TestTransformerPredictor(unittest.TestCase):
     def test_train_works_correctly(self):
         self.predictor.model = Mock()
         self.predictor.model.fit = MagicMock()
-        self.predictor.model.compile = MagicMock()
         self.predictor.train()
         self.predictor.model.fit.assert_called_once()
-        self.predictor.model.compile.assert_called_once()
 
     def test_test_works_correctly(self):
         self.predictor.model = Mock()

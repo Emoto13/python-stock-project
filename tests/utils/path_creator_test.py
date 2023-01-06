@@ -8,7 +8,7 @@ class TestPathCreator(unittest.TestCase):
         periodicity = "daily"
         predictor_name = "name"
         stock_symbol = "GOOGL"
-        checkpoint = f"checkpoints/{predictor_name}/{stock_symbol}/{periodicity}/{stock_symbol}.ckpt"
+        checkpoint = f"checkpoints/{predictor_name}/{stock_symbol}/{periodicity}/checkpoint.ckpt"
         path = PathCreator.create_checkpoint_path(
             periodicity="daily",
             predictor_name="name",
@@ -27,7 +27,7 @@ class TestPathCreator(unittest.TestCase):
         predictor_name = "name"
         stock_symbol = "GOOGL"
         periodicity = "daily"
-        plot_path = f"plots/{predictor_name}/{stock_symbol}/{periodicity}/{stock_symbol}.jpg"
+        plot_path = f"plots/{predictor_name}/{stock_symbol}/{periodicity}/plot.jpg"
         path = PathCreator.create_plot_path(
             predictor_name=predictor_name,
             stock_symbol=stock_symbol,

@@ -1,0 +1,1 @@
+curl -X POST localhost:5000/predict/transformer/GOOGL -H "Content-Type: application/json" -d @./scripts/request.json

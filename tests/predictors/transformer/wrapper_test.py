@@ -15,9 +15,9 @@ class TestTransformerWrapper(unittest.TestCase):
             dataframe=pd.DataFrame.from_dict(
                 {
                     "price": [0.5 + i for i in range(1000)],
-                    "index": pd.date_range(start="2010-01-01", periods=1000).to_pydatetime().tolist()
+                    "date": pd.date_range(start="2010-01-01", periods=1000).to_pydatetime().tolist()
                 }
-            ),
+            ).set_index("date"),
         )
         self.wrapper.model = Mock()
         self.wrapper.model.load = MagicMock(return_value=True)

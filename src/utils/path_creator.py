@@ -1,30 +1,50 @@
 class PathCreator:
+
     @staticmethod
-    def create_checkpoint_path(checkpoint="", periodicity="undefined",
-                               predictor_name="undefined",
-                               stock_symbol="undefined"):
-        if checkpoint is not None and checkpoint.strip() != "":
+    def create_checkpoint_path(checkpoint=None, periodicity=None,
+                               predictor_name=None,
+                               stock_symbol=None):
+        if is_segment_usable(checkpoint):
             return checkpoint
-        path = [
+        raw_path = [
             "checkpoints",
-            f"{predictor_name}",
-            f"{stock_symbol}",
-            f"{periodicity}",
-            f"{stock_symbol}.ckpt"
+            predictor_name,
+            stock_symbol,
+            periodicity,
+            f"checkpoint.ckpt"
         ]
+        path = filter_empty_segments(raw_path)
         return "/".join(path)
 
     @staticmethod
-    def create_plot_path(plot_path="", periodicity="undefined",
-                         predictor_name="undefined",
-                         stock_symbol="undefined"):
-        if plot_path is not None and plot_path.strip() != "":
+    def create_plot_path(plot_path="", periodicity=None,
+                         predictor_name=None,
+                         stock_symbol=None,
+                         mode=None):
+        if is_segment_usable(plot_path):
             return plot_path
-        path = [
+        raw_path = [
             "plots",
-            f"{predictor_name}",
-            f"{stock_symbol}",
-            f"{periodicity}",
-            f"{stock_symbol}.jpg"
+            predictor_name,
+            mode,
+            stock_symbol,
+            periodicity,
+            f"plot.jpg"
         ]
+        path = filter_empty_segments(raw_path)
         return "/".join(path)
+
+
+def is_segment_usable(segment):
+    if (segment is None or
+            type(segment) != str or
+            segment.strip() == ""):
+        return False
+    return True
+
+
+def filter_empty_segments(path):
+    filtered_path = filter(is_segment_usable, path)
+    return list(filtered_path)
+
+
