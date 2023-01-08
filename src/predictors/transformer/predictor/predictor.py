@@ -1,8 +1,8 @@
-from tensorflow.keras.layers import Concatenate, GlobalAveragePooling1D,\
+from keras.layers import Concatenate, GlobalAveragePooling1D,\
     Dropout, Dense, Input
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.models import Model
-from tensorflow.keras.callbacks import ModelCheckpoint
+from keras.optimizers import Adam
+from keras.models import Model
+from keras.callbacks import ModelCheckpoint
 
 from src.models import BasePredictor
 from .transformer_encoder import TransformerEncoder

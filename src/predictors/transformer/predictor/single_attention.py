@@ -1,4 +1,4 @@
-from tensorflow.keras.layers import Layer, Dense
+from keras.layers import Layer, Dense
 import tensorflow as tf
 import numpy as np
 

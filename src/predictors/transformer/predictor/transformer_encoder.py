@@ -1,4 +1,4 @@
-from tensorflow.keras.layers import Layer, Dropout, LayerNormalization, Conv1D
+from keras.layers import Layer, Dropout, LayerNormalization, Conv1D
 from .multi_attention import MultiAttention
 
 
