@@ -51,18 +51,19 @@ class TransformerWrapper(BaseWrapper):
         self.validation_split = validation_split
 
     def create_model(self, **kwargs):
-        self.model = TransformerPredictor(sequence_len=self.sequence_len,
-                                          key_dimension=self.key_dimension,
-                                          value_dimension=self.value_dimension,
-                                          n_heads=self.n_heads,
-                                          ff_dimension=self.ff_dimension,
-                                          filter_size=self.filter_size,
-                                          dropout=self.dropout,
-                                          epochs=self.epochs,
-                                          batch_size=self.batch_size,
-                                          validation_split=self.validation_split,
-                                          checkpoint=self.checkpoint,
-                                          )
+        self.model = TransformerPredictor(
+            sequence_len=self.sequence_len,
+            key_dimension=self.key_dimension,
+            value_dimension=self.value_dimension,
+            n_heads=self.n_heads,
+            ff_dimension=self.ff_dimension,
+            filter_size=self.filter_size,
+            dropout=self.dropout,
+            epochs=self.epochs,
+            batch_size=self.batch_size,
+            validation_split=self.validation_split,
+            checkpoint=self.checkpoint,
+        )
         return self.model
 
     def train(self):
@@ -70,6 +71,7 @@ class TransformerWrapper(BaseWrapper):
 
     def test(self):
         return pd.DataFrame.from_dict(data={
+            "index": [i for i in range(len(self.test_target))],
             "test_result": self.model.test(self.test_data, self.test_target)
         })
 
@@ -77,8 +79,11 @@ class TransformerWrapper(BaseWrapper):
         prediction = self.model.predict(self.data)
         return prediction[0][0]
 
-    def predict_ahead(self, data=None, time_ahead=30, initial_date=datetime.now()):
-        time_steps = [initial_date + timedelta(days=i) for i in range(1, time_ahead + 1)]
+    def predict_ahead(self, data=None, time_ahead=30,
+                      initial_date=datetime.now()):
+        time_steps = [
+            initial_date + timedelta(days=i) for i in range(1, time_ahead + 1)
+        ]
         output = []
         temp_predictions = list(data)
         # Insert dummy element

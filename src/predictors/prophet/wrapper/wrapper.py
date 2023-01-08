@@ -5,7 +5,8 @@ from .preprocessor import PreProcessor
 
 
 class ProphetWrapper(BaseWrapper):
-    def __init__(self, dataframe=None, periodicity="weekly", stock_symbol="undefined"):
+    def __init__(self, dataframe=None, periodicity="weekly",
+                 stock_symbol="undefined"):
         super().__init__()
         self.data = PreProcessor.prepare_data(dataframe)
         self.periodicity = periodicity

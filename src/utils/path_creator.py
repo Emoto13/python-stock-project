@@ -11,7 +11,7 @@ class PathCreator:
             predictor_name,
             stock_symbol,
             periodicity,
-            f"checkpoint.ckpt"
+            "checkpoint.ckpt"
         ]
         path = filter_empty_segments(raw_path)
         return "/".join(path)
@@ -29,7 +29,7 @@ class PathCreator:
             mode,
             stock_symbol,
             periodicity,
-            f"plot.jpg"
+            "plot.jpg"
         ]
         path = filter_empty_segments(raw_path)
         return "/".join(path)
@@ -46,5 +46,3 @@ def is_segment_usable(segment):
 def filter_empty_segments(path):
     filtered_path = filter(is_segment_usable, path)
     return list(filtered_path)
-
-

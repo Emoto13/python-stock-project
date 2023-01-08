@@ -18,6 +18,7 @@ class PredictConfig:
     time_ahead: int
     should_load: bool
 
+
 @dataclass
 class PreprocessorConfig:
     name: str
@@ -60,4 +61,3 @@ class PredictRequest:
 
         if self.additional_model_parameters is None:
             self.additional_model_parameters = {}
-

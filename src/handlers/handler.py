@@ -1,3 +1,5 @@
+from threading import Thread
+
 from flask import Flask, request, abort
 
 from src.controllers.controller import Controller
@@ -14,6 +16,9 @@ def predict(model, stock_symbol):
     if isinstance(mapped_request, Exception):
         abort(400, mapped_request)
 
+    thread = Thread(target=Controller.predict, args=(mapped_request,))
+    thread.start()
+    return {"success": "success"}
     experiment_result = Controller.predict(mapped_request)
     if isinstance(experiment_result, Exception):
         abort(500, experiment_result)

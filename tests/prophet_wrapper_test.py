@@ -33,13 +33,13 @@ class TestProphetWrapper(unittest.TestCase):
         self.wrapper.model.predict = MagicMock(
             return_value=expected_predictions)
 
-        predictions = self.wrapper.run_experiment(
+        result = self.wrapper.run_experiment(
             should_load=True,
             should_train=True,
             should_test=True)
 
         self.assertTrue(
-            expected_predictions.equals(predictions),
+            expected_predictions.equals(result.predictions),
             "predict_ahead should work correctly")
         self.wrapper.model.test.assert_called_once()
         self.wrapper.model.predict.assert_called_once()

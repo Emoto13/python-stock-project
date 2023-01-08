@@ -7,7 +7,8 @@ from .utils import get_seasonality, \
 
 
 class ProphetPredictor(BasePredictor):
-    def __init__(self, data=None, periodicity='weekly', additional_params=None):
+    def __init__(self, data=None, periodicity='weekly',
+                 additional_params=None):
         """[summary]
 
         Args:
@@ -20,7 +21,7 @@ class ProphetPredictor(BasePredictor):
         super().__init__()
         if additional_params is None:
             additional_params = {}
-        self.data = None
+        self.data = data
         self.periodicity = periodicity
         self.additional_params = additional_params
         self.model = self.create_model()

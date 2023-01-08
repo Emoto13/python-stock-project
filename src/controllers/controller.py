@@ -15,32 +15,45 @@ class Controller:
     def predict(predict_request: PredictRequest):
         config = Config.get_config()
 
-        integrator = IntegratorFactory.get_integrator(integrator_name=config.integrator)
+        integrator = IntegratorFactory.get_integrator(
+            integrator_name=config.integrator
+        )
         integrator = integrator.with_credentials(config.api_key)
         data = integrator.get_data(
             stock_symbol=predict_request.stock_symbol,
             periodicity=predict_request.periodicity)
 
         if predict_request.smoother_config is not None:
-            smoother = SmootherFactory.create_smoother(predict_request.smoother_config.name)
-            smoother.preprocess(**predict_request.smoother_config.additional_data)
+            smoother = SmootherFactory.create_smoother(
+                predict_request.smoother_config.name
+            )
+            smoother.preprocess(
+                **predict_request.smoother_config.additional_data
+            )
+
             data.price = smoother.preprocess(
                 data=data.price.values,
                 **predict_request.smoother_config.additional_data)
 
         if predict_request.scaler_config is not None:
-            scaler = ScalerFactory.create_scaler(predict_request.scaler_config.name)
+            scaler = ScalerFactory.create_scaler(
+                predict_request.scaler_config.name
+            )
             data.price = scaler.preprocess(
                 data=data.price.values,
                 **predict_request.scaler_config.additional_data)
 
-        predictor_class = PredictorFactory().create_predictor(predict_request.model)
+        predictor_class = PredictorFactory.create_predictor(
+            predict_request.model
+        )
         predictor = predictor_class(
             dataframe=data,
             stock_symbol=predict_request.stock_symbol,
             periodicity=predict_request.periodicity)
 
-        predictor.create_model(**predict_request.additional_model_parameters)
+        predictor.create_model(
+            **predict_request.additional_model_parameters
+        )
         experiment_result = predictor.run_experiment(
             should_train=predict_request.train_config.should_train,
             should_test=predict_request.test_config.should_test,
@@ -52,6 +65,14 @@ class Controller:
                 periodicity=predict_request.periodicity,
                 stock_symbol=predict_request.stock_symbol,
                 predictor_name=predict_request.model)
-            ComparisonPlotter.plot(data.reset_index(), experiment_result.predictions, plot_path)
+
+            ComparisonPlotter.plot(
+                data.reset_index(), experiment_result.predictions, plot_path
+            )
 
         return experiment_result
+
+    @staticmethod
+    @try_catch
+    async def predict_async(predict_request: PredictRequest):
+        pass

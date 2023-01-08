@@ -1,4 +1,5 @@
-from src.models.internal import PredictRequest, PreprocessorConfig, TrainConfig, TestConfig, PredictConfig
+from src.models.internal import PredictRequest, PreprocessorConfig, \
+    TrainConfig, TestConfig, PredictConfig
 from dacite import from_dict
 
 from src.utils import try_catch
@@ -12,11 +13,21 @@ def to_predict_request(model, stock_symbol, raw_request=None):
     data = {
         "model": model,
         "stock_symbol": stock_symbol,
-        "scaler_config": object_or_none(raw_request, "scaler_config", PreprocessorConfig),
-        "smoother_config": object_or_none(raw_request, "smoother_config", PreprocessorConfig),
-        "train_config": object_or_none(raw_request, "train_config", TrainConfig),
-        "test_config": object_or_none(raw_request, "test_config", TestConfig),
-        "predict_config": object_or_none(raw_request, "predict_config", PredictConfig),
+        "scaler_config": object_or_none(
+            raw_request, "scaler_config", PreprocessorConfig
+        ),
+        "smoother_config": object_or_none(
+            raw_request, "smoother_config", PreprocessorConfig
+        ),
+        "train_config": object_or_none(
+            raw_request, "train_config", TrainConfig
+        ),
+        "test_config": object_or_none(
+            raw_request, "test_config", TestConfig
+        ),
+        "predict_config": object_or_none(
+            raw_request, "predict_config", PredictConfig
+        ),
         **raw_request,
     }
 
@@ -27,9 +38,7 @@ def object_or_none(raw_request, key, object_type):
     if key not in raw_request:
         return None
     result = convert_to_object(object_type, raw_request[key])
-    print("KEY_TO_RES", key, result)
     if isinstance(result, Exception):
-        print(key, "Is None")
         return None
     return result
 
