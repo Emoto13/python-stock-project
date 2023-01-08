@@ -47,9 +47,8 @@ class ProphetPredictor(BasePredictor):
         horizon = (horizon_percentage * len(self.data))
         df_cv = cross_validation(self.model, initial=f"{3 * horizon} days",
                                  horizon=f'{horizon} days')
-        df = performance_metrics(df_cv)
-        print(df)
-        return df
+        test_result = performance_metrics(df_cv)
+        return test_result
 
     def predict(self, data=None, time_ahead=1):
         self.model = self.model.fit(data)

@@ -10,7 +10,7 @@ def try_catch(func):
         try:
             res = func(*args, **kwargs)
             return res
-        except Exception as e:
-            print(f"Exception in {func.__name__}: {e}")
-            return e
+        except Exception as exception:
+            print(f"Exception in {func.__name__}: {exception}")
+            return exception
     return wrapper

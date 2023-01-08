@@ -50,7 +50,7 @@ class TransformerWrapper(BaseWrapper):
         self.batch_size = batch_size
         self.validation_split = validation_split
 
-    def create_model(self, **kwargs):
+    def create_model(self):
         self.model = TransformerPredictor(
             sequence_len=self.sequence_len,
             key_dimension=self.key_dimension,
@@ -71,7 +71,7 @@ class TransformerWrapper(BaseWrapper):
 
     def test(self):
         return pd.DataFrame.from_dict(data={
-            "index": [i for i in range(len(self.test_target))],
+            "index": list(range(len(self.test_target))),
             "test_result": self.model.test(self.test_data, self.test_target)
         })
 

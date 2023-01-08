@@ -20,11 +20,11 @@ class TransformerEncoder(Layer):
             filter_size=self.filter_size)
         self.attention_dropout = Dropout(self.dropout)
         self.attention_normalization = None
-        self.ff_conv1D_1 = Conv1D(
+        self.ff_conv_one_dimension_first = Conv1D(
             filters=self.ff_dim,
             kernel_size=1,
             activation='relu')
-        self.ff_conv1D_2 = Conv1D(
+        self.ff_conv_one_dimension_second = Conv1D(
             filters=self.filter_size,
             kernel_size=1)
         self.ff_dropout = Dropout(self.dropout)
@@ -36,15 +36,15 @@ class TransformerEncoder(Layer):
         self.ff_normalization = LayerNormalization(
             input_shape=input_shape, epsilon=1e-6)
 
-    def call(self, x):  # inputs = (in_seq, in_seq, in_seq)
-        inputs = (x, x, x)
+    def call(self, input_data):  # inputs = (in_seq, in_seq, in_seq)
+        inputs = (input_data, input_data, input_data)
         attention_layer = self.multi_attention(inputs)
         attention_layer = self.attention_dropout(attention_layer)
         attention_layer = self.attention_normalization(
             inputs[0] + attention_layer
         )
-        ff_layer = self.ff_conv1D_1(attention_layer)
-        ff_layer = self.ff_conv1D_2(ff_layer)
+        ff_layer = self.ff_conv_one_dimension_first(attention_layer)
+        ff_layer = self.ff_conv_one_dimension_second(ff_layer)
         ff_layer = self.ff_dropout(ff_layer)
         ff_layer = self.ff_normalization(inputs[0] + ff_layer)
         return ff_layer

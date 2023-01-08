@@ -10,6 +10,5 @@ class BaseIntegrator(ABC):
         return self
 
     @abstractmethod
-    def get_data(self, stock_symbol="", periodicity="daily", *args,
-                 **kwargs):
+    def get_data(self, stock_symbol="", periodicity="daily", **kwargs):
         pass

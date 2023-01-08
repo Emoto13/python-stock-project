@@ -1,3 +1,5 @@
+from threading import Thread
+
 from src.config import Config
 from src.integrators import IntegratorFactory
 from src.models.internal.predict_request import PredictRequest
@@ -75,4 +77,6 @@ class Controller:
     @staticmethod
     @try_catch
     async def predict_async(predict_request: PredictRequest):
-        pass
+        thread = Thread(target=Controller.predict, args=(predict_request,))
+        thread.start()
+        return {"success": "success"}

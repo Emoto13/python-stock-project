@@ -1,6 +1,7 @@
+from dacite import from_dict
+
 from src.models.internal import PredictRequest, PreprocessorConfig, \
     TrainConfig, TestConfig, PredictConfig
-from dacite import from_dict
 
 from src.utils import try_catch
 

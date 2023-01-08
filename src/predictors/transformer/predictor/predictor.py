@@ -31,8 +31,8 @@ class TransformerPredictor(BasePredictor):
     def create_model(self):
         """Construct model"""
         in_seq = Input(shape=(self.sequence_len, 1))
-        x = Time2Vector()(in_seq)
-        x = Concatenate(axis=-1)([in_seq, x])
+        data = Time2Vector()(in_seq)
+        data = Concatenate(axis=-1)([in_seq, data])
 
         transformer_encoder = TransformerEncoder(d_k=self.key_dimension,
                                                  d_v=self.value_dimension,
@@ -40,14 +40,14 @@ class TransformerPredictor(BasePredictor):
                                                  ff_dim=self.ff_dimension,
                                                  filter_size=self.filter_size,
                                                  dropout=self.dropout)
-        x = transformer_encoder(x)
-        x = transformer_encoder(x)
-        x = transformer_encoder(x)
-        x = GlobalAveragePooling1D(data_format='channels_first')(x)
-        x = Dropout(self.dropout)(x)
-        x = Dense(64, activation='relu')(x)
-        x = Dropout(self.dropout)(x)
-        out = Dense(1, activation='linear')(x)
+        data = transformer_encoder(data)
+        data = transformer_encoder(data)
+        data = transformer_encoder(data)
+        data = GlobalAveragePooling1D(data_format='channels_first')(data)
+        data = Dropout(self.dropout)(data)
+        data = Dense(64, activation='relu')(data)
+        data = Dropout(self.dropout)(data)
+        out = Dense(1, activation='linear')(data)
         model = Model(inputs=in_seq, outputs=out)
 
         optimizer = Adam()

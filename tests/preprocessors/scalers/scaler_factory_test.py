@@ -2,7 +2,6 @@ import unittest
 
 from src.preprocessors.scalers.min_max import MinMax
 from src.preprocessors.scalers.scaler_factory import ScalerFactory
-from src.preprocessors.smoothers import SmootherFactory, MovingAverage
 
 
 class TestScalerFactory(unittest.TestCase):
@@ -25,4 +24,3 @@ class TestScalerFactory(unittest.TestCase):
             _ = ScalerFactory.create_scaler(non_existent_scaler_name)
 
         self.assertRaises(ValueError, test_function)
-

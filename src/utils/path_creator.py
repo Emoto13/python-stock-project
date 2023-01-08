@@ -37,7 +37,7 @@ class PathCreator:
 
 def is_segment_usable(segment):
     if (segment is None or
-            type(segment) != str or
+            not isinstance(segment, str) or
             segment.strip() == ""):
         return False
     return True
