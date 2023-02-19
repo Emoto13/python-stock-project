@@ -76,7 +76,7 @@ class Controller:
 
     @staticmethod
     @try_catch
-    async def predict_async(predict_request: PredictRequest):
+    def predict_async(predict_request: PredictRequest):
         thread = Thread(target=Controller.predict, args=(predict_request,))
         thread.start()
-        return {"success": "success"}
+        return {"message": "Response received successfully"}
